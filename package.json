@@ -1,0 +1,17 @@
+{
+  "name": "legion",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "cy:open": "cypress open",
+    "cy:run": "cypress run"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "cypress": "^15.5.0",
+    "typescript": "^5.9.3"
+  }
+}
