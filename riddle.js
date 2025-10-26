@@ -303,36 +303,14 @@ const main = async () => {
     const apiData = await fetchAllPages();
     console.log(`✅ Fetched ${apiData.pages.length} total pages to analyze\n`);
 
-    // Process pages in batches to avoid overwhelming the server
-    const batchSize = 50;
+    // Process all pages
+    console.log("🔍 Processing all pages...\n");
     const results = [];
 
-    // Process all pages (change 1 back to apiData.pages.length for full run)
-    for (let i = 0; i < apiData.pages.length; i += batchSize) {
-      const batch = apiData.pages.slice(i, i + batchSize);
-      console.log(
-        `\n📦 Processing batch ${Math.floor(i / batchSize) + 1}/${Math.ceil(
-          apiData.pages.length / batchSize
-        )} (Pages ${i + 1} to ${Math.min(i + batchSize, apiData.pages.length)})`
-      );
-
-      const batchPromises = batch.map((page, batchIndex) =>
-        processPage(page.url, i + batchIndex, apiData.pages.length)
-      );
-
-      const batchResults = await Promise.all(batchPromises);
-      results.push(...batchResults);
-
-      // Show batch summary
-      const batchReal = batchResults.filter(
-        (r) => r.pageType === "REAL"
-      ).length;
-      const batchFake = batchResults.filter(
-        (r) => r.pageType === "FAKE"
-      ).length;
-      console.log(`   Batch summary: ${batchReal} real, ${batchFake} fake`);
+    for (let i = 0; i < apiData.pages.length; i++) {
+      const result = await processPage(apiData.pages[i].url, i, apiData.pages.length);
+      results.push(result);
     }
-
 
     // Calculate summary
     const realPages = results.filter((r) => r.success && r.pageType === "REAL");
