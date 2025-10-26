@@ -7,61 +7,51 @@ A fun web scraping challenge that involves finding 500 hidden pages and extracti
 Somewhere on this website, 500 pages are hiding in plain sight. Each one is guarding a secret number like a digital dragon hoarding treasure. Your job? Find them all!
 
 ## Install dependencies:
+
 ```bash
-npm install
-npx run cy:run
+node riddle.js
 ```
 
 ## Project Structure
 
 ```
 Legion/
-├── cypress/
-│   ├── e2e/
-│   │   └── riddle.cy.ts          # Main test automation script
-│   └── support/
-│       ├── fetchAPIs.ts          # API data fetching utilities
-│       └── saveResultToFile.ts   # File saving utilities
-├── results/                      # Generated result files
-├── cypress.config.ts            # Cypress configuration
+├── riddle.js                    # Main riddle solver script
+├── fetchAPIs.js                 # API data fetching utilities
+├── RESULTS.md                   # Generated result          
 └── README.md
 ```
 
 ## How It Works
 
 ### 1. API Data Fetching
-The solution starts by fetching all available pages from the Legion Riddle API:
 
-```typescript
-// Fetches paginated data from all available pages
-const fetchAllPages = async () => {
-  // Gets pagination info and fetches all pages
-  // Combines results from multiple API calls
-}
+The solution fetches all available pages from the Legion Riddle API and processes each page's HTML content.
+
+### 2. JavaScript Pattern Analysis
+
+For each page, the solver:
+
+1. **Extracts JavaScript code** from `<script>` tags in the HTML
+2. **Finds the longest array** in the JavaScript code using regex patterns
+3. **Locates the variable just before** the longest array declaration
+4. **Uses that variable's value as an index** to extract the secret number from the longest array
+5. **Identifies real vs fake pages** - real pages contain valid JavaScript patterns, fake pages don't
+
+### 3. Pattern Example
+
+```javascript
+const _4eljzcml = 35;           // Index variable
+const _5f0bajye = [873,328,...]; // Longest array
+// Result: secretNumber = _5f0bajye[35]
 ```
-
-### 2. Page Processing Algorithm
-
-For each valid page, the automation:
-
-1. **Clicks all 5 buttons** at the top of the page (required to reveal hidden numbers)
-2. **Expands the "Important Information Table"** section
-3. **Searches for numbers** in both left and right columns:
-   - Checks `#number-placeholder-right span[class^="val"]` first
-   - Falls back to `#number-placeholder-left span[class^="val"]` if right is empty
-4. **Handles failures gracefully** - skips pages that return 404 or missing elements
-5. **Logs progress** for each page processed
 
 ## Output
 
-The solution generates detailed result files in the `results/` directory:
+Generates `RESULTS.md` with:
 
-```
-Legion Security Riddle - Results Summary
-=======================================
-Timestamp: 2025-10-26T...
-Total Pages Processed: 500
-Numbers Found: [123, 456, 789, ...]
-Total Count of Numbers: 500
-Total Sum: 125000
-```
+- Total pages analyzed (500)
+- Real vs fake page breakdown
+- All secret numbers found
+- **Grand total sum** of all valid numbers
+- Success rate statistics
