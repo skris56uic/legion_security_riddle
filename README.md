@@ -6,8 +6,7 @@ A fun web scraping challenge that involves finding 500 hidden pages and extracti
 
 Somewhere on this website, 500 pages are hiding in plain sight. Each one is guarding a secret number like a digital dragon hoarding treasure. Your job? Find them all!
 
-
-2. Install dependencies:
+## Install dependencies:
 ```bash
 npm install
 npx run cy:run
